@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  // El id de usuario
+  id               Int         @id @default(autoincrement())
+  correo           String      @unique // @[nombre] Son los decoradores que usa prisma
+  contrasenia      String? // El "?" marca que el item puede ser nulo
+  // Toma la referencia de los objetos relacionados al usuario
+  posteos          Post[]
+  // Las ediciones realizadas a la entidad
+  ediciones        Ediciones[] @relation("ediciones_entidad")
+  // Las ediciones que realizó el usuario
+  edicionesUsuario Ediciones[] @relation("usuario_edita")
+
+  disponible Boolean? @default(true)
+
+  // Queries mas rápidas por el index
+  // Filtra los resultados de antemano
+  // Organiza internamente el almacenamiento de los datos en función de este campo
+  @@index([disponible])
+}
+
+model Post {
+  id      Int      @id @default(autoincrement())
+  titulo  String?
+  cuerpo  String?
+  // Toma la referencia del objeto de usuario
+  autor   Usuario? @relation(fields: [autorId], references: [id])
+  // Solo se encarga de linkear el id del usuario
+  autorId Int?
+}
+
+model Ediciones {
+  id              Int       @id @default(autoincrement())
+  descripcion     String?
+  fecha           DateTime? @default(now())
+  // Hace referencia a las ediciones que
+  // se realizaron a la entidad
+  usuario         Usuario?  @relation("ediciones_entidad", fields: [usuarioId], references: [id])
+  usuarioId       Int?
+  // Hace referencia a que usuario realizó
+  // la edición
+  usuarioEditor   Usuario?  @relation("usuario_edita", fields: [usuarioEditorId], references: [id])
+  usuarioEditorId Int?
+}
+
+
