@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthService } from './auth/auth.service';
 import { LoginDto } from './dto/login.dto';
-import { PaginatorDto } from 'src/common';
-import { CreateEdicionesDto } from 'src/ediciones/dto/create-ediciones.dto';
+import { PaginatorDto } from '@/common';
+import { CreateEdicionesDto } from '@/ediciones/dto/create-ediciones.dto';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class UsuariosService {
@@ -172,5 +172,15 @@ export class UsuariosService {
     });
     delete result['contrasenia'];
     return result;
+  }
+
+  async getUserByToken(token: string) {
+    try {
+      const payload = this.auth.comprobarJwt(token);
+      if (!payload) throw new UnauthorizedException('Invalid token');
+      return this.findOne(payload.sub);
+    } catch (err) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

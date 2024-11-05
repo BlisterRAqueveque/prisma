@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JwtGuard } from './usuarios';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EdicionesModule } from './ediciones/ediciones.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   controllers: [AppController],
@@ -16,6 +17,6 @@ import { EdicionesModule } from './ediciones/ediciones.module';
       useClass: JwtGuard,
     },
   ],
-  imports: [PrismaModule, UsuariosModule, EdicionesModule],
+  imports: [PrismaModule, UsuariosModule, EdicionesModule, SocketModule],
 })
 export class AppModule {}

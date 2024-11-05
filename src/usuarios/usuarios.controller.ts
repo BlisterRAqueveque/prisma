@@ -11,12 +11,12 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { PaginatorDto, Public, Usuario } from 'src/common';
+import { Response } from 'express';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { UsuariosService } from './usuarios.service';
-import { response, Response } from 'express';
+import { PaginatorDto, Public, Usuario } from '@/common';
 
 @Controller('usuarios')
 export class UsuariosController {

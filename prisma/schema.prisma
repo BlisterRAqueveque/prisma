@@ -18,6 +18,7 @@ model Usuario {
   id               Int         @id @default(autoincrement())
   correo           String      @unique // @[nombre] Son los decoradores que usa prisma
   contrasenia      String? // El "?" marca que el item puede ser nulo
+  nombre_completo  String?
   // Toma la referencia de los objetos relacionados al usuario
   posteos          Post[]
   // Las ediciones realizadas a la entidad
@@ -56,5 +57,3 @@ model Ediciones {
   usuarioEditor   Usuario?  @relation("usuario_edita", fields: [usuarioEditorId], references: [id])
   usuarioEditorId Int?
 }
-
-

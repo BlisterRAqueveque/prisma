@@ -3,9 +3,9 @@ import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
 import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { envs } from 'src/configuration';
 import { JwtPassport } from './auth/jwt.passport';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { envs } from '@/configuration';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
   controllers: [UsuariosController],
@@ -17,5 +17,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     }),
     PrismaModule,
   ],
+  exports: [UsuariosService],
 })
 export class UsuariosModule {}
